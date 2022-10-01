@@ -1,14 +1,15 @@
 #include "loader.hpp"
 #include "../util/win32/dll_handler.hpp"
 
-Loader::Loader(std::string pathToFile) {
-    using std::filesystem::path, std::filesystem::absolute, std::filesystem::is_directory, std::filesystem::directory_iterator, std::filesystem::directory_entry;
+Loader::Loader(std::string path) {
 
-    auto parse_file = [this](directory_entry file) {
+    using std::filesystem::absolute, std::filesystem::is_directory, std::filesystem::directory_iterator;
+
+    auto parse_file = [this](auto file) {
         if(file.path().extension() == ".dll") loadModule(file);
     };
 
-    path abs = absolute(pathToFile);
+    auto abs = absolute(path);
     if(is_directory(abs)) {
         for(const auto& entry : directory_iterator(abs)) {
             parse_file(entry);
@@ -29,7 +30,7 @@ LoaderModuleHolder Loader::getHolder() {
 }
 
 void Loader::loadModule(std::filesystem::path file) {
-    DEBUG(std::cout << "Loading: " << file.string().c_str() << std::endl;)
+    DEBUG(std::cout << "Loading: " << file.string().c_str() << std::endl);
     
     HMODULE mod = LoadLibraryA(file.string().c_str());
 
@@ -43,7 +44,7 @@ void Loader::loadModule(std::filesystem::path file) {
     if(startUp) {
         startUp(this->m_iLastIndex++);
 
-        this->m_modHolder.addModule(LoaderModule(file.filename().string(), mod, 0, m_iLastIndex));
+        this->m_modHolder.addModule(LoaderModule(file.filename().string(), mod, 0, m_iLastIndex - 1));
     }
 }
 

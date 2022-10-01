@@ -8,7 +8,7 @@
 #include "loader_module.hpp"
 
 /// @brief Class that holds all loaded
-extern "C" class _SLC_API LoaderModuleHolder {
+class LoaderModuleHolder final {
 private:
     std::vector<LoaderModule> loadedModules;
 

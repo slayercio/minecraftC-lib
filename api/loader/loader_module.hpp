@@ -9,7 +9,7 @@
 #include <windows.h>
 #endif
 
-extern "C" class _SLC_API LoaderModule {
+class LoaderModule final {
 public:
     enum ModuleFunctions {
 

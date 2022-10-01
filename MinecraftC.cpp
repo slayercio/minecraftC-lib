@@ -1,6 +1,7 @@
 #include <iostream>
 #include "api/Std.hpp"
 #include "api/loader/loader.hpp"
+#include "api/minecraft/minecraft.hpp"
 
 
 
@@ -21,9 +22,13 @@ _SLC_API void free() {
 }
 
 int main() {
+    Minecraft mc{"test, 123"};
+
     load_libs();
 
     free();
+
+    std::cout << mc.getWorlds() << std::endl;
 
     return 0;
 }
