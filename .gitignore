@@ -7,3 +7,4 @@ MinecraftCE.exe
 libMinecraftC.dll
 libMinecraftC.dll.a
 libMinecraftCE.dll.a
+libTestPlugin.dll

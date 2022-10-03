@@ -1,7 +1,9 @@
 #include "loader.hpp"
 #include "../util/win32/dll_handler.hpp"
+#include "loader_module.hpp"
+#include "loader_module_holder.hpp"
 
-Loader::Loader(std::string path) {
+loader_t::loader_t(std::string path) {
 
     using std::filesystem::absolute, std::filesystem::is_directory, std::filesystem::directory_iterator;
 
@@ -17,19 +19,19 @@ Loader::Loader(std::string path) {
     }
 }
 
-LoaderModule Loader::operator[](std::string filePath) {
+loader_module_t loader_t::operator[](std::string filePath) {
     return this->m_modHolder[filePath];
 }
 
-LoaderModule Loader::operator[](int id) {
+loader_module_t loader_t::operator[](int id) {
     return this->m_modHolder[id];
 }
 
-LoaderModuleHolder Loader::getHolder() {
+loader_module_holder_t loader_t::getHolder() {
     return this->m_modHolder;
 }
 
-void Loader::loadModule(std::filesystem::path file) {
+void loader_t::loadModule(std::filesystem::path file) {
     DEBUG(std::cout << "Loading: " << file.string().c_str() << std::endl);
     
     HMODULE mod = LoadLibraryA(file.string().c_str());
@@ -44,11 +46,11 @@ void Loader::loadModule(std::filesystem::path file) {
     if(startUp) {
         startUp(this->m_iLastIndex++);
 
-        this->m_modHolder.addModule(LoaderModule(file.filename().string(), mod, 0, m_iLastIndex - 1));
+        this->m_modHolder.addModule(loader_module_t(file.filename().string(), mod, 0, m_iLastIndex - 1, this));
     }
 }
 
-void Loader::free() {
+void loader_t::free() {
     for(auto mod : this->m_modHolder) {
         std::cout << "[" << __FILE__ << ":" << __LINE__ << "] Freeing lib: " << mod.getFileName() << std::endl;
         FreeLibrary(mod.getHandle());

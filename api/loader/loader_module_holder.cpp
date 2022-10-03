@@ -1,17 +1,17 @@
 #include "loader_module_holder.hpp"
 #include <stacktrace>
 
-LoaderModule null() {
-    LoaderModule x(std::string(""), (HMODULE)INVALID_HANDLE_VALUE, (long)-1, -1);
+loader_module_t null() {
+    loader_module_t x(std::string(""), (HMODULE)INVALID_HANDLE_VALUE, (long)-1, -1, nullptr);
     return x;
 }
 
-LoaderModuleHolder::LoaderModuleHolder(std::vector<LoaderModule> modules) {
+loader_module_holder_t::loader_module_holder_t(std::vector<loader_module_t> modules) {
     this->loadedModules = modules;
 }
 
-LoaderModule LoaderModuleHolder::getModuleById(int id) {
-    std::vector<LoaderModule>& modules = get();
+loader_module_t loader_module_holder_t::getModuleById(int id) {
+    std::vector<loader_module_t>& modules = get();
 
     for(auto mod : modules) {
         if(mod.getId() == id) return mod;
@@ -20,7 +20,7 @@ LoaderModule LoaderModuleHolder::getModuleById(int id) {
     return null();
 }
 
-LoaderModule LoaderModuleHolder::getModuleByFileName(std::string fileName) {
+loader_module_t loader_module_holder_t::getModuleByFileName(std::string fileName) {
     for(auto mod : get()) {
         if(mod.getFileName() == fileName) return mod;
     }
@@ -28,26 +28,26 @@ LoaderModule LoaderModuleHolder::getModuleByFileName(std::string fileName) {
     return null();
 }
 
-std::vector<LoaderModule>& LoaderModuleHolder::get() {    
+std::vector<loader_module_t>& loader_module_holder_t::get() {    
     return this->loadedModules;
 }
 
-LoaderModule LoaderModuleHolder::operator[](int id) {
+loader_module_t loader_module_holder_t::operator[](int id) {
     return this->getModuleById(id);
 }
 
-LoaderModule LoaderModuleHolder::operator[](std::string x) {
+loader_module_t loader_module_holder_t::operator[](std::string x) {
     return this->getModuleByFileName(x);
 }
 
-std::vector<LoaderModule>::iterator LoaderModuleHolder::begin() {
+std::vector<loader_module_t>::iterator loader_module_holder_t::begin() {
     return loadedModules.begin();
 }
 
-std::vector<LoaderModule>::iterator LoaderModuleHolder::end() {
+std::vector<loader_module_t>::iterator loader_module_holder_t::end() {
     return loadedModules.end();
 }
 
-void LoaderModuleHolder::addModule(LoaderModule mod) {
+void loader_module_holder_t::addModule(loader_module_t mod) {
     this->loadedModules.push_back(mod);
 }

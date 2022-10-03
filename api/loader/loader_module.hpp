@@ -5,16 +5,12 @@
 
 #include <array>
 #include "../Std.hpp"
+#include "loader.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-class LoaderModule final {
-public:
-    enum ModuleFunctions {
-
-    };
-
+class loader_module_t final {
 private:
     HMODULE hMod;
 
@@ -23,17 +19,16 @@ private:
     long functionsExported;
     int id;
 
-    std::vector<ModuleFunctions> functionIncluded;
-
+    loader_t* m_loader;
 public:
     std::string getFileName();
 
     HMODULE getHandle();
     long getFuncExported();
     int getId();
-    std::vector<ModuleFunctions> getExportedRoutines();
+    
 
-    LoaderModule(std::string fileName, HMODULE hMod, long funcExported, int id);
+    loader_module_t(std::string fileName, HMODULE hMod, long funcExported, int id, loader_t* loader);
 };
 
 #endif

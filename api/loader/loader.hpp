@@ -9,14 +9,11 @@
 #include <fstream>
 #include <istream>
 
-#include "loader_module.hpp"
-#include "loader_module_holder.hpp"
-
 /// @brief Loads all dll's found in given directory and checks if they're valid LoaderModule (that is they export void StartUp(int))
-class Loader final {
+class loader_t final {
 private:
     // Holds all of the loaded modules
-    LoaderModuleHolder m_modHolder;
+    loader_module_holder_t m_modHolder;
 
     // Index of last loaded module
     int m_iLastIndex;    
@@ -25,13 +22,13 @@ private:
     void loadModule(std::filesystem::path path);
 
 public:
-    Loader(std::string basePath = "plugins");
+    loader_t(std::string basePath = "plugins");
     void free();
 
-    LoaderModule operator[](std::string filePath);
-    LoaderModule operator[](int id);
+    loader_module_t operator[](std::string filePath);
+    loader_module_t operator[](int id);
 
-    LoaderModuleHolder getHolder();
+    loader_module_holder_t getHolder();
 };
 
 #endif

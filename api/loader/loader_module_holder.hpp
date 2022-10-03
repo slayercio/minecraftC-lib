@@ -8,25 +8,25 @@
 #include "loader_module.hpp"
 
 /// @brief Class that holds all loaded
-class LoaderModuleHolder final {
+class loader_module_holder_t final {
 private:
-    std::vector<LoaderModule> loadedModules;
+    std::vector<loader_module_t> loadedModules;
 
-    std::vector<LoaderModule>& get();
+    std::vector<loader_module_t>& get();
 public:
-    LoaderModuleHolder(std::vector<LoaderModule> modules = {});
+    loader_module_holder_t(std::vector<loader_module_t> modules = {});
 
-    LoaderModule getModuleById(int id);
-    LoaderModule getModuleByFileName(std::string fileName);
+    loader_module_t getModuleById(int id);
+    loader_module_t getModuleByFileName(std::string fileName);
 
-    void addModule(LoaderModule mod);
-    void removeModule(LoaderModule mod);
+    void addModule(loader_module_t mod);
+    void removeModule(loader_module_t mod);
 
-    LoaderModule operator[](int id);
-    LoaderModule operator[](std::string fileName);
+    loader_module_t operator[](int id);
+    loader_module_t operator[](std::string fileName);
 
-    std::vector<LoaderModule>::iterator begin();
-    std::vector<LoaderModule>::iterator end();
+    std::vector<loader_module_t>::iterator begin();
+    std::vector<loader_module_t>::iterator end();
 };
 
 #endif
